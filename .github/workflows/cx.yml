@@ -1,24 +1,21 @@
-name: cx
+name: Checkmarx One Scan
 on:
-  pull_request:
+  push:
     branches:
+      - main
       - master
-#  push:
+      - dev
 jobs:
-  ast_scan:
+  build:
     runs-on: ubuntu-latest
-    name: Checkmarx scan run
     steps:
-      - name: Run scan
-        uses: CheckmarxDev/ast-github-action@more_engines
-        id: scan
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checkmarx One CLI Action
+        uses: checkmarx/ast-github-action@main #Github Action version
         with:
-          github_repo_token: ${{ secrets.GITHUB_TOKEN }}
-          ast_uri: ${{ secrets.AST_URI }}
-          ast_access_key_id: ${{ secrets.AST_ACCESS_KEY_ID }}
-          ast_access_key_secret: ${{ secrets.AST_ACCESS_KEY_SECRET }}
-          sca_user: ${{ secrets.SCA_USER }}
-          sca_password: ${{ secrets.SCA_PASSWORD }}
-          action_scan_complete_timeout_secs: 600
-          high_results_threshold: 0
-          medium_results_threshold: 10
+          project_name: <Name of Checkmarx One Project>
+          cx_tenant: <Checkmarx One Tenant Account>
+          base_uri: <Checkmarx One Base uri> 
+          cx_client_id: ${{ secrets.CX_CLIENT_ID }}
+          cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
